@@ -1,22 +1,19 @@
 #!/bin/bash
-# Structurizr Lite - Start (macOS)
 set -e
+
+# ============================================================
+#   SETTINGS - change these as needed
+# ============================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Find structurizr-lite*.war dynamically
-WAR=$(ls "$SCRIPT_DIR/../Distrib"/structurizr-lite*.war 2>/dev/null | head -1)
-if [ -z "$WAR" ]; then
-    echo "[ERROR] structurizr-lite*.war not found in Distrib."
-    echo "Run Setup/macOS/setup.sh first."
-    exit 1
-fi
+# Path to folder containing structurizr-lite*.war
+DISTRIB_DIR="$SCRIPT_DIR/../Distrib"
 
-# Port for the local web server
+# Port for the local web server (can also be passed as first argument)
 PORT="${1:-8080}"
 
-# Path to the diagram file workspace.dsl (absolute or relative to this script).
-# Leave EMPTY to let Structurizr Lite find "workspace.dsl" in the current folder.
+# Full path to workspace.dsl (leave EMPTY to let Structurizr find it in current folder)
 WORKSPACE=""
 
 # ============================================================
@@ -26,8 +23,15 @@ echo "  Structurizr Lite - Start (macOS)"
 echo "=========================================="
 echo
 
-if [ ! -f "$WAR" ]; then
-    echo "[ERROR] File not found: $WAR"
+WAR_PATH=$(ls "$DISTRIB_DIR"/structurizr-lite*.war 2>/dev/null | head -1)
+if [ -z "$WAR_PATH" ]; then
+    echo "[ERROR] structurizr-lite*.war not found in $DISTRIB_DIR."
+    echo "Run Setup/macOS/setup.sh first."
+    exit 1
+fi
+
+if [ ! -f "$WAR_PATH" ]; then
+    echo "[ERROR] File not found: $WAR_PATH"
     exit 1
 fi
 
@@ -41,7 +45,6 @@ echo "      Java version: $(java -version 2>&1 | head -n 1)"
 
 if [ -n "$WORKSPACE" ] && [ ! -f "$WORKSPACE" ]; then
     echo "[ERROR] Workspace file not found: $WORKSPACE"
-    echo "Fix the WORKSPACE variable in the script."
     exit 1
 fi
 
@@ -51,7 +54,7 @@ echo "      Press Ctrl+C to stop"
 echo
 
 if [ -n "$WORKSPACE" ]; then
-    java -Dserver.port="$PORT" -Dstructurizr.workspacePath="$WORKSPACE" -jar "$WAR"
+    java -Dserver.port="$PORT" -Dstructurizr.workspacePath="$WORKSPACE" -jar "$WAR_PATH"
 else
-    java -Dserver.port="$PORT" -jar "$WAR"
+    java -Dserver.port="$PORT" -jar "$WAR_PATH"
 fi

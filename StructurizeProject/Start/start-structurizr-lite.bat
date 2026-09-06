@@ -1,32 +1,40 @@
 @echo off
 setlocal enabledelayedexpansion
 chcp 65001 >nul
+
+rem ============================================================
+rem   SETTINGS - change these as needed
+rem ============================================================
+
+rem Path to folder containing structurizr-lite*.war
+set "DISTRIB_DIR=%~dp0..\Distrib"
+
+rem Port for the local web server
+set "PORT=8080"
+
+rem Full path to workspace.dsl (leave EMPTY to let Structurizr find it in current folder)
+set "WORKSPACE="
+
+rem ============================================================
+
 echo ==========================================
 echo   Structurizr Lite - Start (Windows)
 echo ==========================================
 echo.
 
 rem Find structurizr-lite*.war dynamically
-set "WAR="
-for /f "usebackq delims=" %%f in (`dir "%~dp0..\Distrib\structurizr-lite*.war" /b /o-n 2^>nul`) do set "WAR=%%f" & goto :war_found
-echo [ERROR] structurizr-lite*.war not found in Distrib.
+set "WAR_NAME="
+for /f "usebackq delims=" %%f in (`dir "%DISTRIB_DIR%\structurizr-lite*.war" /b /o-n 2^>nul`) do set "WAR_NAME=%%f" & goto :war_found
+echo [ERROR] structurizr-lite*.war not found in %DISTRIB_DIR%.
 echo Run Setup\Windows\setup.bat first.
 pause
 exit /b 1
+
 :war_found
-set "WAR=%~dp0..\Distrib\%WAR%"
+set "WAR_PATH=%DISTRIB_DIR%\%WAR_NAME%"
 
-rem Port for the local web server
-set "PORT=8080"
-
-rem Path to the diagram file workspace.dsl (absolute or relative to this script).
-rem Leave EMPTY to let Structurizr Lite find "workspace.dsl" in the current folder.
-set "WORKSPACE="
-
-rem ============================================================
-
-if not exist "%WAR%" (
-    echo [ERROR] File not found: %WAR%
+if not exist "%WAR_PATH%" (
+    echo [ERROR] File not found: %WAR_PATH%
     pause
     exit /b 1
 )
@@ -49,7 +57,6 @@ echo       Java version detected: %JAVA_VERSION%
 if not "%WORKSPACE%"=="" (
     if not exist "%WORKSPACE%" (
         echo [ERROR] Workspace file not found: %WORKSPACE%
-        echo Fix the WORKSPACE variable in the script.
         pause
         exit /b 1
     )
@@ -60,9 +67,9 @@ echo       Open http://localhost:%PORT% in your browser
 echo       Press Ctrl+C to stop
 echo.
 if not "%WORKSPACE%"=="" (
-    java -Dserver.port=%PORT% -Dstructurizr.workspacePath="%WORKSPACE%" -jar "%WAR%"
+    java -Dserver.port=%PORT% -Dstructurizr.workspacePath="%WORKSPACE%" -jar "%WAR_PATH%"
 ) else (
-    java -Dserver.port=%PORT% -jar "%WAR%"
+    java -Dserver.port=%PORT% -jar "%WAR_PATH%"
 )
 
 endlocal
