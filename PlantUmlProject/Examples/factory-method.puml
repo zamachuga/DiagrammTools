@@ -1,0 +1,55 @@
+@startuml FactoryMethod
+skinparam backgroundColor #FEFEFE
+skinparam class {
+  BackgroundColor #F8F9FA
+  BorderColor #2C3E50
+  ArrowColor #2C3E50
+}
+
+interface Product {
+  + {abstract} operation(): void
+}
+
+class ConcreteProductA {
+  + operation(): void
+}
+
+class ConcreteProductB {
+  + operation(): void
+}
+
+interface Creator {
+  + {abstract} factoryMethod(): Product
+  + someOperation(): void
+}
+
+class ConcreteCreatorA {
+  + factoryMethod(): Product
+}
+
+class ConcreteCreatorB {
+  + factoryMethod(): Product
+}
+
+Product <|.. ConcreteProductA
+Product <|.. ConcreteProductB
+
+Creator <|.. ConcreteCreatorA
+Creator <|.. ConcreteCreatorB
+
+ConcreteCreatorA ..> ConcreteProductA : creates
+ConcreteCreatorB ..> ConcreteProductB : creates
+
+note right of Creator
+  <b>factoryMethod()</b> — also called
+  "Virtual Constructor"
+end note
+
+note top of Creator
+  <b>someOperation()</b> calls
+  factoryMethod() to create a
+  Product, then works with it
+  via the Product interface.
+end note
+
+@enduml
