@@ -17,6 +17,9 @@ set "PUML_FILENAME=factory-method.puml"
 rem Full path to the diagram file (built from PUML_DIR + PUML_FILENAME)
 set "PUML_FILE=%PUML_DIR%\%PUML_FILENAME%"
 
+rem Fixed working directory so the GUI file tree starts here
+cd /d "%~dp0"
+
 rem ============================================================
 
 setlocal enabledelayedexpansion
@@ -29,6 +32,8 @@ pause & exit /b 1
 set "JAR_PATH=%DISTRIB_DIR%\%JAR_NAME%"
 echo Opening PlantUML GUI in "%PUML_FILE%"...
 echo Double-click %PUML_FILENAME% in the list.
+pushd "%PUML_DIR%"
 start /B java -jar "%JAR_PATH%" -gui "%PUML_FILE%"
+popd
 endlocal
 exit

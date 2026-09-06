@@ -16,6 +16,9 @@ PUML_FILENAME="factory-method.puml"
 # Full path to the diagram file (built from PUML_DIR + PUML_FILENAME)
 PUML_FILE="$PUML_DIR/$PUML_FILENAME"
 
+# Fixed working directory so the GUI file tree starts here
+cd "$(dirname "$0")"
+
 # ============================================================
 
 JAR_PATH="$(ls "$DISTRIB_DIR"/plantuml*.jar 2>/dev/null | head -1)"
@@ -26,4 +29,4 @@ fi
 
 echo "Opening PlantUML GUI in \"$PUML_FILE\"..."
 echo "Double-click $PUML_FILENAME in the list."
-java -jar "$JAR_PATH" -gui "$PUML_FILE" &
+(cd "$PUML_DIR" && java -jar "$JAR_PATH" -gui "$PUML_FILE") &
