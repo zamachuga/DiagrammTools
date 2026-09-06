@@ -7,8 +7,14 @@
 # Path to folder containing plantuml*.jar
 DISTRIB_DIR="$(cd "$(dirname "$0")/../../Distrib" && pwd)"
 
-# Path to the Examples folder or a specific .puml file
-PUML_FILE="$(cd "$(dirname "$0")/../../Examples" && pwd)"
+# Folder with diagram files
+PUML_DIR="$(cd "$(dirname "$0")/../../Examples" && pwd)"
+
+# Diagram file name to open
+PUML_FILENAME="factory-method.puml"
+
+# Full path to the diagram file (built from PUML_DIR + PUML_FILENAME)
+PUML_FILE="$PUML_DIR/$PUML_FILENAME"
 
 # ============================================================
 
@@ -19,5 +25,5 @@ if [ -z "$JAR_PATH" ]; then
 fi
 
 echo "Opening PlantUML GUI in \"$PUML_FILE\"..."
-echo "Double-click factory-method.puml in the list."
+echo "Double-click $PUML_FILENAME in the list."
 java -jar "$JAR_PATH" -gui "$PUML_FILE" &

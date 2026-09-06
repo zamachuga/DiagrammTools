@@ -13,8 +13,17 @@ DISTRIB_DIR="$SCRIPT_DIR/../Distrib"
 # Port for the local web server (can also be passed as first argument)
 PORT="${1:-8080}"
 
-# Full path to workspace.dsl (leave EMPTY to let Structurizr find it in current folder)
+# Folder containing the workspace file (leave EMPTY to use current folder)
+WORKSPACE_DIR=""
+
+# Workspace file name
+WORKSPACE_FILENAME="workspace.dsl"
+
+# Full path to the workspace file (built from WORKSPACE_DIR + WORKSPACE_FILENAME)
 WORKSPACE=""
+if [ -n "$WORKSPACE_DIR" ]; then
+    WORKSPACE="$WORKSPACE_DIR/$WORKSPACE_FILENAME"
+fi
 
 # ============================================================
 

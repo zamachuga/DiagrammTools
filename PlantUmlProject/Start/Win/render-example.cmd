@@ -8,8 +8,14 @@ rem ============================================================
 rem Path to folder containing plantuml*.jar
 set "DISTRIB_DIR=%~dp0..\..\Distrib"
 
-rem Path to the Examples folder or a specific .puml file
-set "PUML_FILE=%~dp0..\..\Examples"
+rem Folder with diagram files
+set "PUML_DIR=%~dp0..\..\Examples"
+
+rem Diagram file name to open
+set "PUML_FILENAME=factory-method.puml"
+
+rem Full path to the diagram file (built from PUML_DIR + PUML_FILENAME)
+set "PUML_FILE=%PUML_DIR%\%PUML_FILENAME%"
 
 rem ============================================================
 
@@ -22,7 +28,7 @@ pause & exit /b 1
 :run
 set "JAR_PATH=%DISTRIB_DIR%\%JAR_NAME%"
 echo Opening PlantUML GUI in "%PUML_FILE%"...
-echo Double-click factory-method.puml in the list.
+echo Double-click %PUML_FILENAME% in the list.
 start /B java -jar "%JAR_PATH%" -gui "%PUML_FILE%"
 endlocal
 exit

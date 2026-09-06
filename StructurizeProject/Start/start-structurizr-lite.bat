@@ -12,8 +12,15 @@ set "DISTRIB_DIR=%~dp0..\Distrib"
 rem Port for the local web server
 set "PORT=8080"
 
-rem Full path to workspace.dsl (leave EMPTY to let Structurizr find it in current folder)
+rem Folder containing the workspace file (leave EMPTY to use current folder)
+set "WORKSPACE_DIR="
+
+rem Workspace file name
+set "WORKSPACE_FILENAME=workspace.dsl"
+
+rem Full path to the workspace file (built from WORKSPACE_DIR + WORKSPACE_FILENAME)
 set "WORKSPACE="
+if not "%WORKSPACE_DIR%"=="" set "WORKSPACE=%WORKSPACE_DIR%\%WORKSPACE_FILENAME%"
 
 rem ============================================================
 
